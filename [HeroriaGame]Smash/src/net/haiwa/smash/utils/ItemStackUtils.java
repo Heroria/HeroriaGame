@@ -34,4 +34,15 @@ public class ItemStackUtils {
 		
 		return netherstarkit;
 	}
+
+	public ItemStack redstoneBlockComingSoon() {
+		
+		ItemStack redstoneblockcs = new ItemStack(Material.REDSTONE_BLOCK);
+		ItemMeta redstoneblockcsM = redstoneblockcs.getItemMeta();
+		
+		redstoneblockcsM.setDisplayName("§4Coming Soon...");
+		redstoneblockcs.setItemMeta(redstoneblockcsM);
+		
+		return redstoneblockcs;
+	}
 }

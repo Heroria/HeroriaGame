@@ -2,9 +2,11 @@ package net.haiwa.smash.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -13,13 +15,16 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 import net.haiwa.smash.GameStatus;
 import net.haiwa.smash.Main;
 import net.haiwa.smash.runnables.LobbyRunnable;
 import net.haiwa.smash.scoreboards.ScoreboardManager;
+import net.haiwa.smash.utils.InventoryUtils;
 import net.haiwa.smash.utils.ItemStackUtils;
 import net.haiwa.smash.utils.TitleManager;
 
@@ -133,5 +138,22 @@ public class ListenerManager implements Listener {
 		if((!GameStatus.isStatus(GameStatus.GAME))) {
 			e.setCancelled(true);
 		}	
+	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEvent e) {
+		
+		Action action = e.getAction();
+		ItemStack it = e.getItem();
+		Player p = e.getPlayer();
+		
+		if(action == null) return;
+		if(it == null) return;
+		
+		if(it.getType() == Material.NETHER_STAR && it.hasItemMeta() && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().equals("§6Choissir un kit")) {
+			p.openInventory(new InventoryUtils(p).choiceKitInventory());
+			return;
+		}
+		
 	}
 }
