@@ -4,6 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -19,6 +27,7 @@ public class ListenerManager implements Listener {
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
 		
+		p.setExp(0f);
 		p.setHealth(20);
 		p.setFoodLevel(20);
 		p.setLevel(0);
@@ -43,9 +52,8 @@ public class ListenerManager implements Listener {
 		
 		Player p = e.getPlayer();
 		
-		if((LobbyRunnable.start) == true && (GameStatus.isStatus(GameStatus.LOBBY))) {
-			if(Bukkit.getOnlinePlayers().size() < 1) LobbyRunnable.setStart(false);
-			
+		if((GameStatus.isStatus(GameStatus.LOBBY))) {
+			LobbyRunnable.timer = 121;
 			if(ScoreboardManager.scoreboardGame.containsKey(p)){
 				ScoreboardManager.scoreboardGame.remove(p);
 			}
@@ -53,5 +61,70 @@ public class ListenerManager implements Listener {
 		}
 		
 		e.setQuitMessage(null);
+	}
+	
+	@EventHandler
+	public void onFoodLevel(FoodLevelChangeEvent e) {
+		
+		e.setCancelled(true);
+		
+	}
+	
+	@EventHandler
+	public void onDamage(EntityDamageEvent e) {
+	
+		DamageCause cause = e.getCause();
+		
+		if((!GameStatus.isStatus(GameStatus.LOBBY))) {
+			if(cause == null) return;
+			
+			if(cause != DamageCause.PROJECTILE || cause != DamageCause.ENTITY_ATTACK) {
+				return;
+			}else {
+				e.setCancelled(true);
+			}	
+		}
+	}
+	
+	@EventHandler
+	public void onDamageByEntity(EntityDamageByEntityEvent e) {
+		
+		if(GameStatus.isStatus(GameStatus.LOBBY)) {
+			e.setCancelled(true);
+			return;
+		}else{
+			e.setDamage(0);
+			return;
+		}
+		
+	}
+	
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent e) {
+	
+		e.setCancelled(true);
+		
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent e) {
+		
+		e.setCancelled(true);
+		
+	}
+	
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent e) {
+		
+		e.setCancelled(true);
+		
+	}
+	
+	@EventHandler
+	public void onClick(InventoryClickEvent e) {
+		
+		if((!GameStatus.isStatus(GameStatus.GAME))) {
+			e.setCancelled(true);
+		}	
 	}
 }
