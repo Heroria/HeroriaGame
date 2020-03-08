@@ -14,6 +14,7 @@ public class Main extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		INSTANCE = this;
+		saveDefaultConfig();
 		
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvents(new ListenerManager(), this);

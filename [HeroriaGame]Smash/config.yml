@@ -1,0 +1,13 @@
+maps:
+  server:
+    id: smash01
+    lobby:
+      world: world
+      x: 0
+      y: 0
+      z: 0
+    server:
+      world: world
+      x: 0
+      y: 0
+      z: 0
