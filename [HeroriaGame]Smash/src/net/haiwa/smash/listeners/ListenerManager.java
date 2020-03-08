@@ -1,6 +1,7 @@
 package net.haiwa.smash.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,7 @@ import net.haiwa.smash.GameStatus;
 import net.haiwa.smash.Main;
 import net.haiwa.smash.runnables.LobbyRunnable;
 import net.haiwa.smash.scoreboards.ScoreboardManager;
+import net.haiwa.smash.utils.ItemStackUtils;
 import net.haiwa.smash.utils.TitleManager;
 
 public class ListenerManager implements Listener {
@@ -32,6 +34,10 @@ public class ListenerManager implements Listener {
 		p.setFoodLevel(20);
 		p.setLevel(0);
 		p.getInventory().clear();
+		
+		p.getInventory().setItem(8, new ItemStackUtils(p).leaveBed());
+		p.getInventory().setItem(0, new ItemStackUtils(p).kitNetherStar());
+		
 		e.setJoinMessage(Main.INSTANCE.getPrefix() + " A rejoint la partie §b" + Bukkit.getServer().getOnlinePlayers().size() + "/" + Bukkit.getServer().getMaxPlayers());
 		
 		if(!ScoreboardManager.scoreboardGame.containsKey(p)) {
@@ -45,21 +51,18 @@ public class ListenerManager implements Listener {
 			return;
 		}
 		
+		if((!GameStatus.isStatus(GameStatus.LOBBY))) {
+			
+			p.sendMessage("§cLa partie a déjà commencé vous êtes en mode spectateur");
+			p.setGameMode(GameMode.SPECTATOR);
+			
+			return;
+		}
+		
 	}
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
-		
-		Player p = e.getPlayer();
-		
-		if((GameStatus.isStatus(GameStatus.LOBBY))) {
-			LobbyRunnable.timer = 121;
-			if(ScoreboardManager.scoreboardGame.containsKey(p)){
-				ScoreboardManager.scoreboardGame.remove(p);
-			}
-			
-		}
-		
 		e.setQuitMessage(null);
 	}
 	
@@ -82,7 +85,11 @@ public class ListenerManager implements Listener {
 				return;
 			}else {
 				e.setCancelled(true);
+				return;
 			}	
+		}else {
+			e.setCancelled(true);
+			return;
 		}
 	}
 	
@@ -103,21 +110,21 @@ public class ListenerManager implements Listener {
 	public void onBlockBreak(BlockBreakEvent e) {
 	
 		e.setCancelled(true);
-		
+		return;
 	}
 	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent e) {
 		
 		e.setCancelled(true);
-		
+		return;
 	}
 	
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent e) {
 		
 		e.setCancelled(true);
-		
+		return;
 	}
 	
 	@EventHandler
