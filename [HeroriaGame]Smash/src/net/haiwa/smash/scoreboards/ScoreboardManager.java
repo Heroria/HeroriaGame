@@ -24,7 +24,7 @@ public class ScoreboardManager {
 		
 		((ScoreboardSign) scoreboardGame.get(p)).setLine(8, "§5");
 		((ScoreboardSign) scoreboardGame.get(p)).setLine(6, "§5");
-		((ScoreboardSign) scoreboardGame.get(p)).setLine(5, "§5Joueurs: §f" + Bukkit.getOnlinePlayers() + "/" + Bukkit.getServer().getMaxPlayers());
+		((ScoreboardSign) scoreboardGame.get(p)).setLine(5, "§5Joueurs: §f" + Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getServer().getMaxPlayers());
 		((ScoreboardSign) scoreboardGame.get(p)).setLine(4, "§5");
 		((ScoreboardSign) scoreboardGame.get(p)).setLine(3, "§cEn attente de");
 		((ScoreboardSign) scoreboardGame.get(p)).setLine(2, "§cJoueurs...");

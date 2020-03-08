@@ -23,7 +23,7 @@ public class LobbyRunnable extends BukkitRunnable{
 		
 		timer--;
 		
-		if(Bukkit.getServer().getOnlinePlayers().size() > 4 || GameStatus.isStatus(GameStatus.LOBBY) == true) {
+		if(Bukkit.getServer().getOnlinePlayers().size() < 1 || (!GameStatus.isStatus(GameStatus.LOBBY))) {
 			Bukkit.broadcastMessage(Main.INSTANCE.getPrefix() + " Il n'y a pas assé de joueurs pour lancer la partie");
 			timer = 121;
 			this.cancel();
@@ -38,7 +38,7 @@ public class LobbyRunnable extends BukkitRunnable{
 			setLevel();
 			return;
 		}
-		
+		setLevel();
 		if(timer == 0) {
 			timer = 121;
 			this.cancel();
@@ -48,7 +48,6 @@ public class LobbyRunnable extends BukkitRunnable{
 			new GameRunnable().runTaskTimer(Main.INSTANCE, 0L, 20L);
 			return;
 		}
-		setLevel();
 	}
 
 	private void setLevel() {
