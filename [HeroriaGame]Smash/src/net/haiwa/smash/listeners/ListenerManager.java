@@ -1,5 +1,6 @@
 package net.haiwa.smash.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,8 +21,9 @@ public class ListenerManager implements Listener {
 		
 		p.setHealth(20);
 		p.setFoodLevel(20);
-		p.setLevel(20);
+		p.setLevel(0);
 		p.getInventory().clear();
+		e.setJoinMessage(Main.INSTANCE.getPrefix() + " A rejoint la partie §b" + Bukkit.getServer().getOnlinePlayers().size() + "/" + Bukkit.getServer().getMaxPlayers());
 		
 		if(!ScoreboardManager.scoreboardGame.containsKey(p)) {
 			new ScoreboardManager(p).loadScoreboard();
@@ -38,7 +40,18 @@ public class ListenerManager implements Listener {
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
+		
+		Player p = e.getPlayer();
+		
+		if((LobbyRunnable.start) == true && (GameStatus.isStatus(GameStatus.LOBBY))) {
+			if(Bukkit.getOnlinePlayers().size() < 1) LobbyRunnable.setStart(false);
+			
+			if(ScoreboardManager.scoreboardGame.containsKey(p)){
+				ScoreboardManager.scoreboardGame.remove(p);
+			}
+			
+		}
+		
 		e.setQuitMessage(null);
 	}
-	
 }
