@@ -31,5 +31,4 @@ public class Main extends JavaPlugin{
 	public String getPrefix() {
 		return "§5[Smash]§r";
 	}
-	
 }

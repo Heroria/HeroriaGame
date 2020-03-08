@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import net.haiwa.smash.GameStatus;
@@ -135,9 +136,25 @@ public class ListenerManager implements Listener {
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
 		
+		Inventory inv = e.getInventory();
+		Player p = (Player) e.getWhoClicked();
+		ItemStack current = e.getCurrentItem();
+		
 		if((!GameStatus.isStatus(GameStatus.GAME))) {
-			e.setCancelled(true);
-		}	
+			if(inv.getName().equalsIgnoreCase("§6" + p.getName() + " Kits")) {
+				if(current.getType() == Material.REDSTONE_BLOCK) {
+					p.closeInventory();
+					p.sendMessage("§cCe kit sera bientôt disponible");
+					return;
+				}else {
+					e.setCancelled(true);
+					return;
+				}
+			}else {
+				e.setCancelled(true);
+				return;
+			}
+		}
 	}
 	
 	@EventHandler
@@ -154,6 +171,5 @@ public class ListenerManager implements Listener {
 			p.openInventory(new InventoryUtils(p).choiceKitInventory());
 			return;
 		}
-		
 	}
 }
