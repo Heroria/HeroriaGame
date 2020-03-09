@@ -27,6 +27,7 @@ import net.haiwa.smash.runnables.LobbyRunnable;
 import net.haiwa.smash.scoreboards.ScoreboardManager;
 import net.haiwa.smash.utils.InventoryUtils;
 import net.haiwa.smash.utils.ItemStackUtils;
+import net.haiwa.smash.utils.LobbyUtils;
 import net.haiwa.smash.utils.TitleManager;
 
 public class ListenerManager implements Listener {
@@ -51,6 +52,7 @@ public class ListenerManager implements Listener {
 		}
 		
 		if((LobbyRunnable.start) == false && (GameStatus.isStatus(GameStatus.LOBBY))) {
+			p.teleport(new LobbyUtils().getLobby());
 			new LobbyRunnable().runTaskTimer(Main.INSTANCE, 0L, 20L);
 			LobbyRunnable.setStart(true);
 			TitleManager.sendTitle(p, "§5Smash", "§bEn attente de joueurs...", 20 * 3);
