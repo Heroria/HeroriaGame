@@ -1,16 +1,13 @@
 package net.haiwa.smash.utils;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemStackUtils {
 
-	private Player p;
+	public ItemStackUtils() {
 
-	public ItemStackUtils(Player p) {
-		this.p = p;
 	}
 	
 	public ItemStack leaveBed() {

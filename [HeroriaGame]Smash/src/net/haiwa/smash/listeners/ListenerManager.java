@@ -27,7 +27,6 @@ import net.haiwa.smash.runnables.LobbyRunnable;
 import net.haiwa.smash.scoreboards.ScoreboardManager;
 import net.haiwa.smash.utils.InventoryUtils;
 import net.haiwa.smash.utils.ItemStackUtils;
-import net.haiwa.smash.utils.LobbyUtils;
 import net.haiwa.smash.utils.TitleManager;
 
 public class ListenerManager implements Listener {
@@ -42,8 +41,8 @@ public class ListenerManager implements Listener {
 		p.setLevel(0);
 		p.getInventory().clear();
 		
-		p.getInventory().setItem(8, new ItemStackUtils(p).leaveBed());
-		p.getInventory().setItem(0, new ItemStackUtils(p).kitNetherStar());
+		p.getInventory().setItem(8, new ItemStackUtils().leaveBed());
+		p.getInventory().setItem(0, new ItemStackUtils().kitNetherStar());
 		
 		e.setJoinMessage(Main.INSTANCE.getPrefix() + " A rejoint la partie §b" + Bukkit.getServer().getOnlinePlayers().size() + "/" + Bukkit.getServer().getMaxPlayers());
 		
@@ -52,7 +51,6 @@ public class ListenerManager implements Listener {
 		}
 		
 		if((LobbyRunnable.start) == false && (GameStatus.isStatus(GameStatus.LOBBY))) {
-			p.teleport(new LobbyUtils().getLobby());
 			new LobbyRunnable().runTaskTimer(Main.INSTANCE, 0L, 20L);
 			LobbyRunnable.setStart(true);
 			TitleManager.sendTitle(p, "§5Smash", "§bEn attente de joueurs...", 20 * 3);

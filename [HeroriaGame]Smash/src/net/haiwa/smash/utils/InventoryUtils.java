@@ -15,7 +15,7 @@ public class InventoryUtils {
 	public Inventory choiceKitInventory() {
 		
 		Inventory inv = Bukkit.createInventory(null, 9, "§6" + p.getName() + " Kits");
-		inv.setItem(0, new ItemStackUtils(p).redstoneBlockComingSoon());
+		inv.setItem(0, new ItemStackUtils().redstoneBlockComingSoon());
 		
 		return inv;
 	}

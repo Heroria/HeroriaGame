@@ -1,65 +1,39 @@
 package net.haiwa.smash.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import net.haiwa.smash.Main;
+import net.haiwa.smash.cmd.CmdSetPlayerSpawn;
 
 public class LocationUtils {
 	
-	private List<Location> spawnlocation = new ArrayList<Location>();
-	File file = new File(Main.INSTANCE.getDataFolder(), "/spawnlocation.yml");
-	YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-	String key = "server." + Main.test;
+	public static List<Location> spawnlocation = new ArrayList<Location>();
 	
-	public LocationUtils() {
+	
+	public static void teleportSpawnLocation(Player p) {
+		final File file = new File(Main.INSTANCE.getDataFolder(), "/spawnlocation.yml");
+		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 		
-	}
-	
-	public void addSpawnLocation(Location loc) {
-		spawnlocation.add(loc);
-	}
-	
-	public Location getSpawnLocationByNumbers(int args) {
-		return spawnlocation.get(args);
-	}
-	
-	public List<Location> getArraySpawnLocation(){
-		return spawnlocation;
-	}
-	
-	public void removeSpawnLocation(Location loc) {
-	
-		if(spawnlocation.contains(loc)) {
-			spawnlocation.remove(loc);
-			return;
-		}else {
-			return;
+		for(int i = 0; i < config.getInt("server." + ".spawnNumbers"); i++) {
+			String key = "server." + (i + 1);
+			World world = Bukkit.getWorld(config.getString(key) + ".world");
+			double x = config.getDouble(key + ".x");
+			double y = config.getDouble(key + ".y");
+			double z = config.getDouble(key + ".z");
+			float pitch = (float) config.getDouble(key + ".pitch");
+			float yaw = (float) config.getDouble(key + ".yaw");
+			p.teleport(new Location(world, x, y, z, yaw, pitch));
+			p.sendMessage("vous etes tp a " + x + y + z);
+			
 		}
-	}
-	
-	public void toFile(World world) {
-		config.set(key + "." + spawnlocation.size() + ".world", world.getName());
-		config.set(key + "." + spawnlocation.size() + ".x", spawnlocation.get(spawnlocation.size() - 1).getX());
-		config.set(key + "." + spawnlocation.size() + ".y", spawnlocation.get(spawnlocation.size() - 1).getY());
-		config.set(key + "." + spawnlocation.size() + ".z", spawnlocation.get(spawnlocation.size() - 1).getZ());
-		config.set(key + "." + spawnlocation.size() + ".pitch", spawnlocation.get(spawnlocation.size() - 1).getPitch());
-		config.set(key + "." + spawnlocation.size() + ".yaw", spawnlocation.get(spawnlocation.size() - 1).getYaw());
-		Main.test++;
-		try {
-			config.save(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return;
 	}
 }
